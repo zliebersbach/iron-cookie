@@ -1,0 +1,26 @@
+<!doctype html>
+
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+	<link rel="import" href="../iron-cookie.html">
+</head>
+
+<body>
+	<template is="dom-bind" id="demo">
+		<iron-cookie name="demo" value="{{value}}" uri-safe></iron-cookie>
+
+		<p>
+			<b>Enter a value to store in a cookie:</b>
+			<input value="{{value::input}}">
+		</p>
+
+		<p><b>Current cookie value:</b> {{value}}</p>
+
+		<p>Reload the page and the value will be saved!</p>
+	</template>
+</body>
+</html>

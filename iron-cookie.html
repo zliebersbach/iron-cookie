@@ -1,0 +1,85 @@
+<!doctype html>
+
+<link rel="import" href="../polymer/polymer.html">
+
+<script>
+	/**
+	 * @demo
+	 */
+	Polymer({
+		is: "iron-cookie",
+
+		properties: {
+			name: {
+				type: String,
+				observer: "_nameChanged"
+			},
+			value: {
+				type: String,
+				notify: true,
+				observer: "_setCookie",
+				value: ""
+			},
+			expires: {
+				type: Object,
+				observer: "_setCookie"
+			},
+			path: {
+				type: String,
+				value: "/"
+			},
+			secure: {
+				type: Boolean,
+				observer: "_setCookie",
+				value: false
+			},
+			uriSafe: {
+				type: Boolean,
+				value: false
+			}
+		},
+		_nameChanged: function() {
+			this.async(function() {
+				this.value = this._getCookie();
+			});
+		},
+
+		_getCookie: function() {
+			var name = this.name + "=";
+			var cookies = document.cookie.split(";");
+			for(var i = 0; i < cookies.length; i++) {
+				var cookie = cookies[i];
+				while (cookie.charAt(0) == " ")
+					cookie = cookie.substring(1);
+				if (cookie.indexOf(name) == 0) {
+					cookie = cookie.substring(name.length, cookie.length);
+					return this.uriSafe ? decodeURIComponent(cookie) : cookie;
+				}
+			}
+			return "";
+		},
+		_setCookie: function() {
+			if (this.name === undefined || this.value === undefined)
+				return;
+
+			var date = new Date();
+			var expiresTime;
+			if (typeof this.expires == "number")
+				expiresTime = this.expires * 24 * 60 * 60 * 1000;
+			else if (typeof this.expires == "string")
+				expiresTime = new Date(this.expires).getTime();
+			else if (typeof this.expires == "object")
+				expiresTime = new Date(this.expires.year, this.expires.month, this.expires.day, this.expires.hour, this.expires.minutes, this.expires.seconds, this.expires.milliseconds).getTime();
+			date.setTime(date.getTime() + (expiresTime || 0));
+
+			var value = this.uriSafe ? encodeURIComponent(this.value) : this.value;
+			var cookie = this.name + "=" + value;
+			if (expiresTime != undefined)
+				cookie += "; expires=" + date.toUTCString();
+			cookie += "; path=" + this.path;
+			if (this.secure)
+				cookie += "; secure";
+			document.cookie = cookie;
+		}
+	});
+</script>
