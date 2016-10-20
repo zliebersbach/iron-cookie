@@ -84,9 +84,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			}
 		},
 		_nameChanged: function() {
-			this.async(function() {
-				this.value = this._getCookie();
-			});
+			this.value = this._getCookie();
 		},
 		_getCookie: function() {
 			var name = this.name + "=";
@@ -116,7 +114,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				expiresTime = new Date(this.expires.year, this.expires.month, this.expires.day, this.expires.hour, this.expires.minutes, this.expires.seconds, this.expires.milliseconds).getTime();
 			date.setTime(date.getTime() + (expiresTime || 0));
 
-			var value = this.uriSafe ? encodeURIComponent(this.value) : this.value;
+			var value = this.value;
+			if (this.uriSafe)
+				value = encodeURIComponent(this.value);
+			else if (value.indexOf(";") > 0 || value.indexOf("=") > 0)
+				throw new Error("`value` cannot contain ';' or '=' characters when `uriSafe` is not true");
 			var cookie = this.name + "=" + value;
 			if (expiresTime != undefined)
 				cookie += "; expires=" + date.toUTCString();
