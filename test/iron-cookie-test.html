@@ -1,0 +1,97 @@
+<!doctype html>
+<!-- @license
+iron-cookie, a Polymer element for managing cookies.
+Copyright (C) 2016  Kevin Boxhoorn
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+	<script src="../../web-component-tester/browser.js"></script>
+	<link rel="import" href="../iron-cookie.html">
+</head>
+<body>
+	<test-fixture id="iron-cookie">
+		<template>
+			<iron-cookie></iron-cookie>
+		</template>
+	</test-fixture>
+
+	<script>
+		suite("iron-cookie tests", () => {
+			let ironCookie;
+			setup(() => {
+				ironCookie = fixture("iron-cookie");
+			});
+
+			test("sets a cookie", () => {
+				ironCookie.name = "test-1";
+				ironCookie.value = "test-1-value";
+				expect(document.cookie.indexOf("test-1=test-1-value")).to.be.at.least(0);
+			});
+
+			test("gets a cookie", () => {
+				document.cookie = "test-2=test-2-value";
+				ironCookie.name = "test-2";
+				expect(ironCookie.value).to.equal("test-2-value");
+			});
+
+			test("notifies the value when the cookie name changes", (done) => {
+				document.cookie = "test-3-1=test-3-1-value";
+				document.cookie = "test-3-2=test-3-2-value";
+				ironCookie.name = "test-3-1";
+				expect(ironCookie.value).to.equal("test-3-1-value");
+				ironCookie.addEventListener("value-changed", () => {
+					expect(ironCookie.value).to.equal("test-3-2-value");
+					done();
+				});
+				ironCookie.name = "test-3-2";
+			});
+
+			test("reloads a cookie when it is changed elsewhere", () => {
+				document.cookie = "test-4=test-4-1-value";
+				ironCookie.name = "test-4";
+				expect(ironCookie.value).to.equal("test-4-1-value");
+				document.cookie = "test-4=test-4-2-value";
+				ironCookie.reload();
+				expect(ironCookie.value).to.equal("test-4-2-value");
+			});
+
+			test("encodes URI patterns", () => {
+				ironCookie.uriSafe = true;
+				ironCookie.name = "test-5";
+				ironCookie.value = ";=";
+				expect(document.cookie.indexOf("test-5=%3B%3D")).to.be.at.least(0);
+			});
+
+			test("decodes URI patterns", () => {
+				document.cookie = "test-6=%3B%3D"
+				ironCookie.uriSafe = true;
+				ironCookie.name = "test-6";
+				expect(ironCookie.value).to.equal(";=");
+			});
+
+			test("throws error when trying to set value that contains illegal characters and URI patterns are disabled", () => {
+				ironCookie.name = "test-7";
+				expect(() => ironCookie.value = ";=").to.throw("`value` cannot contain ';' or '=' characters when `uriSafe` is not true");
+			});
+		});
+	</script>
+</body>
+</html>
