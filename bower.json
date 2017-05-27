@@ -1,6 +1,6 @@
 {
   "name": "iron-cookie",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "homepage": "https://wincinderith.github.io/iron-cookie",
   "authors": [
     "Kevin Boxhoorn <kevinboxhoorn@yahoo.com>"
@@ -16,10 +16,10 @@
     "tests"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.7.0"
+    "polymer": "Polymer/polymer#^2.0.0"
   },
   "devDependencies": {
-    "iron-component-page": "PolymerElements/iron-component-page#^1.1.7",
-    "web-component-tester": "^4.3.5"
+    "iron-component-page": "PolymerElements/iron-component-page#^2.0.0",
+    "web-component-tester": "^6.0.0"
   }
 }

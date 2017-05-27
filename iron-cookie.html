@@ -24,69 +24,71 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	 * Polymer element for managing cookies.
 	 * @demo
 	 */
-	Polymer({
-		is: "iron-cookie",
+	class IronCookieElement extends Polymer.Element {
+		static get is() { return "iron-cookie" }
 
-		properties: {
-			/**
-			 * Name of the cookie to manipulate.
-			 */
-			name: {
-				type: String,
-				observer: "_nameChanged"
-			},
-			/**
-			 * Value of the cookie.
-			 */
-			value: {
-				type: String,
-				notify: true,
-				observer: "_setCookie",
-				value: ""
-			},
-			/**
-			 * Length of time to keep the cookie before expiring it. Can be a
-			 * `Number` of days, UTC time `String`, or `Object` with values
-			 * corresponding to the arguments of the JavaScript `Date`
-			 * contructor (e.g. `{ year: 2018, month: 11, day: 31 }`).
-			 * See [this](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) for more info.
-			 * @type {String|Number|Object}
-			 */
-			expires: {
-				type: Object,
-				observer: "_setCookie"
-			},
-			/**
-			 * URL path that the cookie is available to.
-			 */
-			path: {
-				type: String,
-				value: "/"
-			},
-			/**
-			 * Toggles the `secure` flag of the cookie. This makes it only get
-			 * sent with HTTPS requests.
-			 */
-			secure: {
-				type: Boolean,
-				observer: "_setCookie",
-				value: false
-			},
-			/**
-			 * Whether to encode and decode the cookie using `encodeURIComponent`
-			 * and `decodeURIComponent`. This allows values such as `;` and `=`
-			 * to be a part of the cookie without it being corrupted.
-			 * Recommended if data bound to user input.
-			 */
-			uriSafe: {
-				type: Boolean,
-				value: false
-			}
-		},
-		_nameChanged: function() {
+		static get properties() {
+			return {
+				/**
+				 * Name of the cookie to manipulate.
+				 */
+				name: {
+					type: String,
+					observer: "_nameChanged"
+				},
+				/**
+				 * Value of the cookie.
+				 */
+				value: {
+					type: String,
+					notify: true,
+					observer: "_setCookie"
+				},
+				/**
+				 * Length of time to keep the cookie before expiring it. Can be a
+				 * `Number` of days, UTC time `String`, or `Object` with values
+				 * corresponding to the arguments of the JavaScript `Date`
+				 * contructor (e.g. `{ year: 2018, month: 11, day: 31 }`).
+				 * See [this](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) for more info.
+				 * @type {String|Number|Object}
+				 */
+				expires: {
+					type: Object,
+					observer: "_setCookie"
+				},
+				/**
+				 * URL path that the cookie is available to.
+				 */
+				path: {
+					type: String,
+					value: "/"
+				},
+				/**
+				 * Toggles the `secure` flag of the cookie. This makes it only get
+				 * sent with HTTPS requests.
+				 */
+				secure: {
+					type: Boolean,
+					observer: "_setCookie",
+					value: false
+				},
+				/**
+				 * Whether to encode and decode the cookie using `encodeURIComponent`
+				 * and `decodeURIComponent`. This allows values such as `;` and `=`
+				 * to be a part of the cookie without it being corrupted.
+				 * Recommended if data bound to user input.
+				 */
+				uriSafe: {
+					type: Boolean,
+					value: false
+				}
+			};
+		}
+
+		_nameChanged() {
 			this.value = this._getCookie();
-		},
-		_getCookie: function() {
+		}
+		_getCookie() {
 			var name = this.name + "=";
 			var cookies = document.cookie.split(";");
 			for(var i = 0; i < cookies.length; i++) {
@@ -99,8 +101,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				}
 			}
 			return "";
-		},
-		_setCookie: function() {
+		}
+		_setCookie() {
 			if (this.name === undefined || this.value === undefined)
 				return;
 
@@ -128,14 +130,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			if (this.secure)
 				cookie += "; secure";
 			document.cookie = cookie;
-		},
+		}
 
 		/**
 		 * Reloads the cookie from the document. Useful if the cookie is changed
 		 * elsewhere.
 		 */
-		reload: function() {
+		reload() {
 			this.value = this._getCookie();
 		}
-	});
+	}
+
+	customElements.define(IronCookieElement.is, IronCookieElement);
 </script>

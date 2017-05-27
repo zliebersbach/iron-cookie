@@ -34,17 +34,19 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 </head>
 
 <body>
-	<template is="dom-bind" id="demo">
-		<iron-cookie name="demo" value="{{value}}" uri-safe></iron-cookie>
+	<dom-bind>
+		<template>
+			<iron-cookie name="demo" value="{{value}}" uri-safe></iron-cookie>
 
-		<p>
-			<b>Enter a value to store in a cookie:</b>
-			<input value="{{value::input}}">
-		</p>
+			<p>
+				<b>Enter a value to store in a cookie:</b>
+				<input value="{{value::input}}">
+			</p>
 
-		<p><b>Current cookie value:</b> {{value}}</p>
+			<p><b>Current cookie value:</b> {{value}}</p>
 
-		<p>Reload the page and the value will be saved!</p>
-	</template>
+			<p>Reload the page and the value will be saved!</p>
+		</template>
+	</dom-bind>
 </body>
 </html>
