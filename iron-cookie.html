@@ -42,7 +42,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				value: {
 					type: String,
 					notify: true,
-					observer: "_setCookie"
+					observer: "_setCookieWrapper"
 				},
 				/**
 				 * Length of time to keep the cookie before expiring it. Can be a
@@ -54,7 +54,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				 */
 				expires: {
 					type: Object,
-					observer: "_setCookie"
+					observer: "_setCookieWrapper"
 				},
 				/**
 				 * URL path that the cookie is available to.
@@ -69,7 +69,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				 */
 				secure: {
 					type: Boolean,
-					observer: "_setCookie",
+					observer: "_setCookieWrapper",
 					value: false
 				},
 				/**
@@ -81,6 +81,23 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				uriSafe: {
 					type: Boolean,
 					value: false
+				},
+				/**
+				 * Get the cookie manually using the `getCookie` method. This
+				 * disables automatically loading the cookie when the element is
+				 * initialized.
+				 */
+				manualGet: {
+					type: Boolean,
+					value: false
+				},
+				/**
+				 * Set the cookie manually using the `setCookie` method. This
+				 * disables automatically setting the cookie when `value` changes.
+				 */
+				manualSet: {
+					type: Boolean,
+					value: false
 				}
 			};
 		}
@@ -88,7 +105,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		_nameChanged() {
 			this.value = this._getCookie();
 		}
-		_getCookie() {
+		_getCookie(force=false) {
+			if (this.manualGet && !force)
+				return;
+
 			var name = this.name + "=";
 			var cookies = document.cookie.split(";");
 			for(var i = 0; i < cookies.length; i++) {
@@ -102,7 +122,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 			}
 			return "";
 		}
-		_setCookie() {
+		_setCookie(force=false) {
+			if (this.manualSet && !force)
+				return;
 			if (this.name === undefined || this.value === undefined)
 				return;
 
@@ -131,13 +153,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				cookie += "; secure";
 			document.cookie = cookie;
 		}
+		/**
+		 * Stops arguments being passed from observers.
+		 */
+		_setCookieWrapper() {
+			this._setCookie();
+		}
 
 		/**
-		 * Reloads the cookie from the document. Useful if the cookie is changed
-		 * elsewhere.
+		 * Sets the cookie. Only useful when manualSet is true.
 		 */
-		reload() {
-			this.value = this._getCookie();
+		setCookie() {
+			this._setCookie(true);
+		}
+		/**
+		 * Gets the cookie. Only useful when manualGet is true.
+		 */
+		getCookie() {
+			this.value = this._getCookie(true);
 		}
 	}
 
