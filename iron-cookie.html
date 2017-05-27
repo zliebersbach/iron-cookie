@@ -107,7 +107,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		}
 		_getCookie(force=false) {
 			if (this.manualGet && !force)
-				return;
+				return "";
 
 			var name = this.name + "=";
 			var cookies = document.cookie.split(";");

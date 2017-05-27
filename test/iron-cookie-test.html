@@ -64,31 +64,41 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 				ironCookie.name = "test-3-2";
 			});
 
-			test("reloads a cookie when it is changed elsewhere", () => {
-				document.cookie = "test-4=test-4-1-value";
+			test("manually gets cookies", () => {
+				document.cookie = "test-4=test-4-value";
+				ironCookie.manualGet = true;
 				ironCookie.name = "test-4";
-				expect(ironCookie.value).to.equal("test-4-1-value");
-				document.cookie = "test-4=test-4-2-value";
-				ironCookie.reload();
-				expect(ironCookie.value).to.equal("test-4-2-value");
+				expect(ironCookie.value).to.equal("");
+				ironCookie.getCookie();
+				expect(ironCookie.value).to.equal("test-4-value");
+			});
+
+			test("manually sets cookies", () => {
+				document.cookie = "test-5=test-5-1-value";
+				ironCookie.manualSet = true;
+				ironCookie.name = "test-5";
+				ironCookie.value = "test-5-2-value";
+				expect(document.cookie.indexOf("test-5=test-5-2-value")).to.equal(-1);
+				ironCookie.setCookie();
+				expect(document.cookie.indexOf("test-5=test-5-2-value")).to.be.at.least(0);
 			});
 
 			test("encodes URI patterns", () => {
 				ironCookie.uriSafe = true;
-				ironCookie.name = "test-5";
+				ironCookie.name = "test-6";
 				ironCookie.value = ";=";
-				expect(document.cookie.indexOf("test-5=%3B%3D")).to.be.at.least(0);
+				expect(document.cookie.indexOf("test-6=%3B%3D")).to.be.at.least(0);
 			});
 
 			test("decodes URI patterns", () => {
-				document.cookie = "test-6=%3B%3D"
+				document.cookie = "test-7=%3B%3D"
 				ironCookie.uriSafe = true;
-				ironCookie.name = "test-6";
+				ironCookie.name = "test-7";
 				expect(ironCookie.value).to.equal(";=");
 			});
 
 			test("throws error when trying to set value that contains illegal characters and URI patterns are disabled", () => {
-				ironCookie.name = "test-7";
+				ironCookie.name = "test-8";
 				expect(() => ironCookie.value = ";=").to.throw("`value` cannot contain ';' or '=' characters when `uriSafe` is not true");
 			});
 		});
