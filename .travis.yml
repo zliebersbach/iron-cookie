@@ -6,4 +6,4 @@ addons:
   firefox: latest
 before_script:
 - npm install
-script: xvfb-run wct
+script: xvfb-run polymer test --npm --module-resolution=node
