@@ -5,6 +5,5 @@ sudo: required
 addons:
   firefox: latest
 before_script:
-- npm install -g bower web-component-tester
-- bower install
+- npm install
 script: xvfb-run wct
