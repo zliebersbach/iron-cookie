@@ -6,4 +6,5 @@ addons:
   firefox: latest
 before_script:
 - npm install
+- npm install -g polymer-cli
 script: xvfb-run polymer test --npm --module-resolution=node
