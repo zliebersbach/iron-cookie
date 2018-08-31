@@ -4,6 +4,7 @@ dist: trusty
 sudo: required
 addons:
   firefox: latest
+  chrome: stable
 before_script:
 - npm install
 - npm install -g polymer-cli
