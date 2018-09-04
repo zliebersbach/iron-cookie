@@ -4,7 +4,8 @@ dist: trusty
 sudo: required
 addons:
   firefox: latest
+  chrome: stable
 before_script:
-- npm install -g bower web-component-tester
-- bower install
-script: xvfb-run wct
+- npm install
+- npm install -g polymer-cli
+script: xvfb-run polymer test --npm --module-resolution=node

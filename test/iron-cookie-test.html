@@ -18,14 +18,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-	<script src="../../web-component-tester/browser.js"></script>
-	<link rel="import" href="../iron-cookie.html">
+	<script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+	<script src="../node_modules/wct-browser-legacy/browser.js"></script>
+
+	<script type="module" src="../iron-cookie.js"></script>
 </head>
+
 <body>
 	<test-fixture id="iron-cookie">
 		<template>
@@ -33,7 +36,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		</template>
 	</test-fixture>
 
-	<script>
+	<script type="module">
 		suite("core tests", () => {
 			let ironCookie;
 			setup(() => {
@@ -104,4 +107,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		});
 	</script>
 </body>
+
 </html>
